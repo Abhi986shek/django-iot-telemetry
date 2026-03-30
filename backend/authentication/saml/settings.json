@@ -1,0 +1,22 @@
+{
+  "strict": true,
+  "debug": false,
+  "sp": {
+    "entityId": "https://your-app-domain.com/auth/saml/metadata/",
+    "assertionConsumerService": {
+      "url": "https://your-app-domain.com/auth/saml/acs/",
+      "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+    },
+    "NameIDFormat": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+    "x509cert": "",
+    "privateKey": ""
+  },
+  "idp": {
+    "entityId": "https://your-idp.example.com/",
+    "singleSignOnService": {
+      "url": "https://your-idp.example.com/sso/saml",
+      "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+    },
+    "x509cert": "PASTE_IDP_CERTIFICATE_HERE"
+  }
+}

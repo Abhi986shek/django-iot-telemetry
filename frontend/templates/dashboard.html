@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — IoT Analytics{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h2>Telemetry Dashboard</h2>
+    <p>Live overview of all registered industrial machine nodes</p>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <span class="stat-value">{{ summary.total_active_machines }}</span>
+        <span class="stat-label">Active Machines</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-value">{{ summary.total_telemetry_records }}</span>
+        <span class="stat-label">Total Records</span>
+    </div>
+</div>
+
+<div class="section">
+    <h3>Machine Overview</h3>
+    <div id="machine-table-container">
+        <table class="data-table" id="machine-table">
+            <thead>
+                <tr>
+                    <th>Machine ID</th>
+                    <th>Location</th>
+                    <th>Registered</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="machine-table-body">
+                <tr><td colspan="4">Loading...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="section" id="telemetry-section" style="display:none;">
+    <h3>Telemetry Data — <span id="selected-machine-label"></span></h3>
+    <canvas id="telemetry-chart" height="120"></canvas>
+</div>
+
+<div class="section">
+    <h3>Recent Ingestions</h3>
+    <table class="data-table">
+        <thead>
+            <tr><th>File</th><th>Status</th><th>Records</th><th>Time</th></tr>
+        </thead>
+        <tbody>
+            {% for log in summary.recent_ingestions %}
+            <tr>
+                <td>{{ log.file_name }}</td>
+                <td><span class="badge badge-{{ log.status|lower }}">{{ log.status }}</span></td>
+                <td>{{ log.records_processed }}</td>
+                <td>{{ log.ingested_at }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4">No ingestions yet.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    loadMachineTable();
+</script>
+{% endblock %}

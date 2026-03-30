@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Upload Telemetry — IoT Analytics{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h2>Upload Telemetry Data</h2>
+    <p>Upload CSV or Excel files exported from your industrial edge devices.</p>
+</div>
+
+{% if error %}
+<div class="alert alert-error">{{ error }}</div>
+{% endif %}
+
+{% if success %}
+<div class="alert alert-success">
+    File processed successfully.
+    {{ success.records_saved }} records saved for machine <strong>{{ success.machine_id }}</strong>.
+</div>
+{% endif %}
+
+<div class="upload-card">
+    <form method="POST" enctype="multipart/form-data" action="{% url 'upload' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="machine_id">Machine ID</label>
+            <input type="text" id="machine_id" name="machine_id" placeholder="e.g. MACHINE-001" required>
+        </div>
+        <div class="form-group">
+            <label for="shift_id">Shift / Session ID <em>(optional)</em></label>
+            <input type="text" id="shift_id" name="shift_id" placeholder="e.g. SHIFT-2024-01">
+        </div>
+        <div class="form-group">
+            <label for="telemetry_file">Telemetry File (.csv, .xls, .xlsx)</label>
+            <input type="file" id="telemetry_file" name="telemetry_file" accept=".csv,.xls,.xlsx" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Upload and Process</button>
+    </form>
+</div>
+
+<div class="upload-info">
+    <h4>Supported Column Names</h4>
+    <p>The platform automatically detects and maps the following column naming conventions:</p>
+    <table class="data-table">
+        <thead><tr><th>Metric</th><th>Accepted Column Names</th></tr></thead>
+        <tbody>
+            <tr><td>RPM / Speed</td><td>RPM, Capacity, Speed, C_Rate</td></tr>
+            <tr><td>Vibration</td><td>Vibration, Voltage, Hz</td></tr>
+            <tr><td>Pressure / Current</td><td>Pressure, Current, PSI</td></tr>
+            <tr><td>Power</td><td>Power, Energy, kW</td></tr>
+            <tr><td>Health Score</td><td>SOC, Health, StateOfCharge</td></tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+.env
+__pycache__/
+*.pyc
+*.pyo
+db.sqlite3
+*.log
+venv/
+env/
+.venv/
+staticfiles/
+uploads/
+backend/authentication/saml/sp-private-key.pem
+backend/authentication/saml/sp-certificate.crt
